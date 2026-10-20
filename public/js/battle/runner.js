@@ -272,7 +272,7 @@ export function createBattleRunner(deps) {
     simCs = want;
     const p = (want ? contentFor(want).then((content) => {
       if (!content || content.cs !== want) throw new Error(`the content set ${want.slice(0, 8)} is not loaded on this page`);
-      return deps.loadSim ? loadSim(content) : { content, cs: want, remote: true };
+      return deps.loadSim || (!deps.createHost && !content.scripts?.length) ? loadSim(content) : { content, cs: want, remote: true };
     }) : loadSim(null)).catch((err) => { if (simP === p) { simP = null; simCs = null; } throw err; });
     simP = p;
     return p;
