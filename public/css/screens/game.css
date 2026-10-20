@@ -1027,3 +1027,14 @@
 @media (prefers-reduced-motion: reduce) {
   .downm__face.is-out, .downm__title { animation: none; }
 }
+
+/* Opt-in Unite vote, anchored to the native phase capsule (1rem = 100 design px). */
+.unite-fast { position: absolute; top: calc(100% + .22rem); left: 50%; transform: translateX(-50%); z-index: 8;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .06rem;
+  width: max-content; max-width: min(3.5rem, 70vw); padding: .04rem .08rem; color: #e7fff7;
+  background: #142723f2; border: 1px solid #59d9b2; font-size: max(12px, calc(.14 * var(--t)));
+  pointer-events: auto; }
+.unite-fast button { min-height: 32px; padding: .03rem .08rem; color: #081b15; background: #59d9b2;
+  border: 0; cursor: pointer; font: inherit; white-space: nowrap; }
+.unite-fast button:disabled { opacity: .5; cursor: default; }
+.unite-fast small { flex-basis: 100%; text-align: center; }

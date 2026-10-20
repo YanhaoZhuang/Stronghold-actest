@@ -17,6 +17,7 @@ export class MatchReports {
 
   /** b.progress from a field's authority (anything else — a stale battle, a demoted client — is ignored). */
   _onProgress(ps, msg) {
+    if (this.uniteFast?.status === 'running' && this.phase === 'UNITE') return OK;
     if (!this.clientCombat) return fail(ERR.WRONG_PHASE, 'server-run combat');
     const f = this._fieldByBattle(msg.battleId);
     if (!f || f.done || f.verifyJob || f.mode !== 'client' || f.authority !== ps.playerId) return OK;
@@ -51,6 +52,7 @@ export class MatchReports {
 
   /** b.result from a field's authority: validated against the spec; an implausible one is replaced by the server's run. */
   _onResult(ps, msg) {
+    if (this.uniteFast?.status === 'running' && this.phase === 'UNITE') return OK;
     if (!this.clientCombat) return fail(ERR.WRONG_PHASE, 'server-run combat');
     const f = this._fieldByBattle(msg.battleId);
     if (!f || f.done || f.heldResult || f.verifyJob || f.mode !== 'client' || f.authority !== ps.playerId) return OK;

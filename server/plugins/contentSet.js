@@ -349,6 +349,9 @@ function composeContentSet({ registry, ids = [], checkDataOnly = false }) {
   const composed = composeRules(plugins.map((p) => ({ id: p.id, rules: p.manifest.rules })));
   if (composed.problems.length) return { problems: composed.problems };
   const rules = composed.rules;
+  // Worker replay supports declarative content, never silently omits executable plugin hooks.
+  if (rules?.uniteFastForward === 'unanimous' && scripts.length)
+    return { problems: [problem('PLUGIN_RULES', 'rules.uniteFastForward', 'Unite fast-forward cannot be combined with script or trusted plugins')] };
   const cs = contentHashOf({ app: base.identity.app, sim: base.identity.sim, data: hashes, plugins: parts, settings, ...(Object.keys(i18n).length ? { i18n } : {}), ...(rules ? { rules } : {}) });
   const cache = caches.get(registry) ?? new Map(); caches.set(registry, cache);
   if (cache.has(cs)) return cache.get(cs);

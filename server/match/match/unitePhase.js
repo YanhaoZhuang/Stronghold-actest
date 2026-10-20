@@ -18,7 +18,9 @@ export class MatchUnite {
     this.phase = PHASE.UNITE;
     this.unitePlan = plan;
     const limit = this.wave ? this.wave.timeLimit : 60;
-    const battle = this.newBattle(this._uniteOpts(plan, limit));
+    const opts = this._uniteOpts(plan, limit);
+    this._initUniteFast(opts);
+    const battle = this.newBattle(opts);
     this.fields = [{ fieldId: 'u', kind: 'unite', players: plan.helpers.map((p) => p.playerId), battle, live: true }];
     this.deadline = this.sched.instant ? 0 : this.sched.now() + Math.round((limit / this.gameSpeed) * 1000);
     this._defaultWatch();
@@ -31,11 +33,7 @@ export class MatchUnite {
       onDone: (runner) => {
         if (this.phase !== PHASE.UNITE) return;
         const res = runner.resultOf(this.fields[0]);
-        this._collectSimErrors(this.fields[0], res);
-        this.fields[0].live = false;
-        this.deadline = 0;
-        this.markPublic();
-        this.later(this.scaled(DELAYS.COMBAT_END), () => this.settle(plan, res));
+        this._completeUniteServer(res);
       },
     });
     this.runner.start();
@@ -69,11 +67,23 @@ export class MatchUnite {
     };
   }
 
+  _completeUniteServer(res) {
+    if (this.phase !== PHASE.UNITE || !this._claimUniteEnd(res)) return;
+    this._collectSimErrors(this.fields[0], res);
+    this.fields[0].live = false;
+    this.deadline = 0;
+    this.markPublic();
+    const plan = this.unitePlan;
+    this.later(this.scaled(DELAYS.COMBAT_END), () => this.settle(plan, res));
+  }
+
   _startUniteClient(plan) {
     this.phase = PHASE.UNITE;
     this.unitePlan = plan;
     const limit = this.wave ? this.wave.timeLimit : 60;
-    const f = this._ccField({ fieldId: 'u', kind: 'unite', players: plan.helpers.map((p) => p.playerId), opts: this._uniteOpts(plan, limit) });
+    const opts = this._uniteOpts(plan, limit);
+    this._initUniteFast(opts);
+    const f = this._ccField({ fieldId: 'u', kind: 'unite', players: plan.helpers.map((p) => p.playerId), opts });
     this.deadline = this.sched.instant ? 0 : this.sched.now() + Math.round((limit / this.gameSpeed) * 1000);
     this.watchers.clear();
     this._launch([f]);
@@ -90,6 +100,7 @@ export class MatchUnite {
     if (this.phase !== PHASE.UNITE) return;
     const f = this.fields[0];
     const res = f.result;
+    if (!this._claimUniteEnd(res)) return;
     this._collectSimErrors(f, res);
     this._stopClientCombat();
     f.live = false;

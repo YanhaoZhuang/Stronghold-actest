@@ -222,3 +222,13 @@ other owners do not replenish spent stock. [ASSUMED] Keep valid board cards in r
 index order, remove obsolete/excess cards and temp deadlines, and grant missing copies via normal overflow.
 These do not alter the default rules above. See
 [PLUGINS.md](../PLUGINS.md#rule-switches) for limits and assumptions.
+
+## Optional custom rule: unanimous Unite fast-forward
+
+This fork adds the explicitly requested, default-off house rule uniteFastForward: unanimous.
+Only living human helpers vote; disconnected helpers remain in the quorum and lose pending votes.
+AI-only fields retain normal pacing. The phase-scoped completion claim is shared by natural completion and a
+disposable 15-second worker replay. The result uses existing settlement: no separate LP or bounty formula.
+Current combat has no manual inputs. Replay uses the stored initial BattleSpec, room data and bounds.
+Script/trusted combinations are refused because executable plugin state cannot be inherited by replay.
+The contract and deployment guide are in [UNITE-FAST-FORWARD.md](../UNITE-FAST-FORWARD.md).

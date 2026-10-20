@@ -336,3 +336,11 @@ are entirely native and require consent [ASSUMED]; trusted classes cannot load i
 same-origin native script responses before import; all gameplay battle simulations run in Workers.
 
 Test-room admission requires `testAck:true` for both join and spectate; otherwise `TEST_CONFIRM` precedes any membership/state delivery. `g.test bond` accepts `{id,layers,count?}` (count is 0–99 extra members). All host attempts consume their per-command rate bucket, including malformed args. `[test-input ROOM]` init/call/timer JSON lines and `[test-audit ROOM]` results use the server logger. Test results have null titles and zero trophies/rewards and never enter browser records.
+
+## Optional custom Unite vote
+
+g.uniteFast accepts round, phaseId and agree. The authenticated seat must be a living, connected helper of
+the matching UNITE phase with the opt-in rule enabled. This exposes no UI-plugin write capability.
+m.public.unite.fastForward carries phaseId, round, status, eligible, votes and failed for viewers and reconnects.
+During running, browser reports cannot submit a result. Failure clears votes and resumes normal execution.
+See [UNITE-FAST-FORWARD.md](../UNITE-FAST-FORWARD.md).

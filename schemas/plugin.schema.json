@@ -985,6 +985,12 @@
             "official",
             "allow"
           ]
+        },
+        "uniteFastForward": {
+          "enum": [
+            "off",
+            "unanimous"
+          ]
         }
       }
     },

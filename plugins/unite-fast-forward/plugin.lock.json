@@ -1,0 +1,17 @@
+{
+  "lock": 1,
+  "id": "unite-fast-forward",
+  "version": "1.0.0",
+  "generator": "tools/plugin.mjs pack",
+  "files": {
+    "README.md": {
+      "sha256": "b472e48a90491a2f951ffc84e93f225d13a0bd0450165dfe1d8aaaac80b2fc25",
+      "bytes": 676
+    },
+    "plugin.json": {
+      "sha256": "d04cdcb7d62bf5b41e8e296aa31a2471223640d8edd5d35d40b621b597f7ecea",
+      "bytes": 330
+    }
+  },
+  "spine": {}
+}

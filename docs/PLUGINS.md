@@ -2436,3 +2436,10 @@ sets pin the runtime bytes. Match hosts, bot rehearsals, studio trials and the b
 Workers still cannot fetch: the page verifies the runtime bytes before sending content. The standalone battle console
 does not replay preparation; use room test grants for gain effects. Forge's existing custom JavaScript handlers are
 not inferred from effect names or prose: this API does not automatically translate those handlers.
+
+## Custom fork rule: Unite fast-forward
+
+The custom patch adds rules.uniteFastForward = unanimous (default off). This is a rules-only content plugin
+with no permissions or script. Its declaration enters the content identity and room rule summary.
+Stock servers reject the unknown switch with PLUGIN_RULES. Combining it with script/trusted plugins is refused.
+[Installation and compatibility](UNITE-FAST-FORWARD.md).

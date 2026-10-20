@@ -12,7 +12,10 @@ import { onHumanEmote } from '../botEmotes.js';
 
 export class MatchIntents {
   _handle(ps, msg) {
+    if (this.uniteFast?.status === 'running' && this.phase === PHASE.UNITE &&
+      !['g.uniteFast', 'g.watch', 'g.emote', 'g.leave', 'b.progress', 'b.result'].includes(msg.t)) return fail(ERR.WRONG_PHASE);
     switch (msg.t) {
+      case 'g.uniteFast': return this.voteUniteFast(ps, msg);
       case 'g.infoReady':
         if (this.phase !== PHASE.INFO_CHECK) return fail(ERR.WRONG_PHASE);
         if (this.setupVote) return fail(ERR.WRONG_PHASE, 'setup reroll vote in progress');

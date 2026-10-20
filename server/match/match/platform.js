@@ -129,6 +129,7 @@ export class MatchPlatform {
     if (!ps || ps.isBot || this.disposed) return;
     this.guard(() => {
       ps.connected = false;
+      if (this.uniteFast?.status === 'waiting') this.uniteFast.votes.delete(playerId);
       // A disconnected human's silence is never consent to a new setup.
       this.cancelSetupVote();
       // a paused solo battle resumes (the server takes the field over; nobody is left to resume it)
@@ -181,6 +182,7 @@ export class MatchPlatform {
     if (!ps || ps.isBot || ps.left || this.disposed) return;
     this.guard(() => {
       ps.left = true;
+      if (this.uniteFast?.status === 'waiting') this.uniteFast.votes.delete(playerId);
       this.cancelSetupVote();
       ps.connected = false;
       ps.autoplay = false;
@@ -255,6 +257,7 @@ export class MatchPlatform {
   dispose() {
     if (this.disposed) return;
     this.disposed = true;
+    this._cancelUniteFast();
     if (this.runner) { try { this.runner.stop(); } catch { /* ignore */ } }
     this._stopClientCombat();
     this._cancelRehearsal();

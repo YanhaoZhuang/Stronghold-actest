@@ -184,7 +184,7 @@ export function officialBoundsReady() {
  * @param {{ bb: Map<string, number>, fields: Map<string, number>, bbMin: Map<string, number>,
  *   fieldMin: Map<string, number>, text: Map<string, number> }} bounds
  */
-export function exportOfficialBounds(bounds) {
+export function exportOfficialBounds(bounds = cached) {
   const src = bounds && bounds.bb ? bounds : emptyBounds();
   return {
     v: 1,
