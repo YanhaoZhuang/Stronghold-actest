@@ -15,6 +15,7 @@ plugins/*
 !plugins/AGENTS.md
 !plugins/_template/
 !plugins/unite-fast-forward/
+!plugins/battle-speed/
 handoff
 pv
 3，9，11回合情况
