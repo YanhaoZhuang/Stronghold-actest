@@ -29,7 +29,7 @@ function collector() {
 }
 
 test('the closed table is the only list of names and options', () => {
-  assert.deepEqual(RULE_NAMES, ['shopBias', 'prepLoadout', 'morphPairing', 'unequip', 'battleSpeedControl', 'uniteFastForward']);
+  assert.deepEqual(RULE_NAMES, ['shopBias', 'prepLoadout', 'morphPairing', 'unequip', 'battleSpeedControl', 'uniteFastForward', 'uniteKillReward']);
   assert.deepEqual(RULE_SWITCHES.shopBias.options, ['official', 'bondBias']);
   assert.deepEqual(RULE_SWITCHES.prepLoadout.options, ['locked', 'prep']);
   assert.deepEqual(RULE_SWITCHES.morphPairing.options, ['official', 'plus']);
@@ -271,4 +271,15 @@ test('Forge behaviour becomes rules; an unknown switch is skipped', async () => 
   } finally {
     fs.rmSync(parent, { recursive: true, force: true });
   }
+});
+
+test('unite kill reward composes independently with both fast-forward rules', (t) => {
+  const f = fixture(t);
+  f.put('reward', { permissions: [], rules: { uniteKillReward: 'per5' } });
+  f.put('speed', { permissions: [], rules: { battleSpeedControl: 'unanimous' } });
+  f.put('fast', { permissions: [], rules: { uniteFastForward: 'unanimous' } });
+  const set = buildContentSet({ registry: f.registry, ids: ['reward', 'speed', 'fast'] });
+  assert.deepEqual(set.problems, []);
+  assert.deepEqual(set.rules, { battleSpeedControl: 'unanimous', uniteFastForward: 'unanimous', uniteKillReward: 'per5' });
+  assert.deepEqual(set.index.rules, set.rules);
 });

@@ -10,6 +10,10 @@ import { FLOW_TICKER_PRIORITY, DELAYS } from './common.js';
 import { msg } from '../../../shared/i18n.js';
 import { onSettle, resetRoundCounters } from '../botEmotes.js';
 import { creditedKillsOf } from '../../sim/spec.js';
+import { ruleOption } from '../../../shared/plugins/rules.js';
+
+/** uniteKillReward: knock-outs on the 联防 field per coin (custom rule, docs/UNITE-KILL-REWARD.md). */
+export const UNITE_KILLS_PER_COIN = 5;
 
 export class MatchSettle {
   settle(plan, uniteResult) {
@@ -55,6 +59,7 @@ export class MatchSettle {
         coins += Math.max(0, Math.trunc(Number(up.coins) || 0));
         ps.stats.dmgDealt += Number(up.damageDealt) || 0;
         ps.stats.kills += Number(up.killed) || 0;
+        coins += this._uniteKillReward(ps, plan, up, uniteRan);
       }
       ps.creditedKills += creditedKillsOf(r) + creditedKillsOf(up);
       // perfect-payout bounties (战术特训): own phase perfect
@@ -82,6 +87,22 @@ export class MatchSettle {
     this.markPublic();
     onSettle(this); // one emote per alive AI per round (enabled by default; SP_BOT_EMOTES=0 silences it)
     this.setDeadline(DELAYS.SETTLE / 1000, () => this.afterSettle(), { silent: this.soloUntimed });
+  }
+
+  /**
+   * Custom rule uniteKillReward (docs/UNITE-KILL-REWARD.md; the server owner's request, not official): a 联防 helper
+   * gains floor(killed / UNITE_KILLS_PER_COIN) coins, credited with the bounty coins to the next prep. `killed` is the
+   * helper's credited kills on the 联防 field, including kills by summons. [ASSUMED] the remainder is dropped per 联防; a synthetic
+   * result (the 联防 could not run) pays nothing; AI helpers earn it like humans.
+   * @returns {number} the coins (0 when the rule is off)
+   */
+  _uniteKillReward(ps, plan, up, uniteRan) {
+    if (ruleOption(this.rules, 'uniteKillReward') !== 'per5') return 0;
+    if (!uniteRan || !plan || !plan.helpers.includes(ps)) return 0;
+    const killed = creditedKillsOf(up);
+    const coins = Math.floor(killed / UNITE_KILLS_PER_COIN);
+    if (coins > 0) this.toast(ps, 'success', msg('联防击倒{kills}名敌人，获得{coins}金币', { kills: killed, coins }));
+    return coins;
   }
 
   /**

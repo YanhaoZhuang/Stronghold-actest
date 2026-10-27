@@ -1,0 +1,17 @@
+{
+  "lock": 1,
+  "id": "unite-kill-reward",
+  "version": "1.0.0",
+  "generator": "tools/plugin.mjs pack",
+  "files": {
+    "README.md": {
+      "sha256": "35e2dd8fb58bf92f7f1f9e4df7120e4b160c3e42583f7f5bb0de5abe713cb40d",
+      "bytes": 556
+    },
+    "plugin.json": {
+      "sha256": "e2e95308cae658cd2dc042e93baa6267b26ff53e78bbb305f9f4f1b66f7c3ac3",
+      "bytes": 329
+    }
+  },
+  "spine": {}
+}

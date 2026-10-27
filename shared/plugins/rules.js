@@ -18,7 +18,7 @@
 import { problem } from './dataUtils.js';
 import { N_ } from '../i18n.js';
 
-/** @typedef {'shopBias'|'prepLoadout'|'morphPairing'|'unequip'|'uniteFastForward'|'battleSpeedControl'} RuleName */
+/** @typedef {'shopBias'|'prepLoadout'|'morphPairing'|'unequip'|'uniteFastForward'|'battleSpeedControl'|'uniteKillReward'} RuleName */
 
 /**
  * Closed switches. `options[0]` is the default (today's behaviour). `phrase` is the Chinese line shown for a
@@ -48,6 +48,12 @@ export const RULE_SWITCHES = Object.freeze({
   uniteFastForward: Object.freeze({
     options: Object.freeze(['off', 'unanimous']),
     phrase: Object.freeze({ unanimous: N_('协防玩家全票同意可快进联防') }),
+  }),
+  // [ASSUMED] custom rule (server owner's request, not official): a 联防 helper's settlement adds
+  // floor(knock-outs / 5) coins; the remainder is dropped per 联防. See docs/UNITE-KILL-REWARD.md.
+  uniteKillReward: Object.freeze({
+    options: Object.freeze(['off', 'per5']),
+    phrase: Object.freeze({ per5: N_('联防中每击倒5名敌人获得1金币') }),
   }),
 });
 

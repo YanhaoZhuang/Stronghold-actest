@@ -46,6 +46,8 @@ plugins/*
 !plugins/_template/
 !plugins/unite-fast-forward/
 !plugins/battle-speed/
+!plugins/unite-kill-reward/
+plugins/unite-kill-reward/.studio.json
 plugins/battle-speed/.studio.json
 plugins/unite-fast-forward/.studio.json
 

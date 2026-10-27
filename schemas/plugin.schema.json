@@ -998,6 +998,12 @@
             "off",
             "unanimous"
           ]
+        },
+        "uniteKillReward": {
+          "enum": [
+            "off",
+            "per5"
+          ]
         }
       }
     },

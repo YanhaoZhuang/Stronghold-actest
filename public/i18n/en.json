@@ -2213,5 +2213,7 @@
   "同意已撤回，投票已取消": "Consent withdrawn; vote cancelled",
   "倍速投票已取消": "Speed vote cancelled",
   "战斗结束，投票已取消": "Battle ended; vote cancelled",
-  "快速结算中，投票已取消": "Fast settlement started; vote cancelled"
+  "快速结算中，投票已取消": "Fast settlement started; vote cancelled",
+  "联防中每击倒5名敌人获得1金币": "Earn 1 coin for every 5 enemies defeated in Unite",
+  "联防击倒{kills}名敌人，获得{coins}金币": "Defeated {kills} enemies in Unite and earned {coins} coins"
 }

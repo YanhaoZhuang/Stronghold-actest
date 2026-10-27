@@ -236,3 +236,5 @@ The contract and deployment guide are in [UNITE-FAST-FORWARD.md](../UNITE-FAST-F
 ## 自定义战斗倍速
 
 服主选择启用 battleSpeedControl 后，普通作战全员真人、联防协防真人对同一档位投票，所有改速都须全票通过。15 秒真实时间超时或名单变化取消投票而不改速；每个阶段复位。此为定制规则，详见 [战斗倍速](../BATTLE-SPEED.md)。
+
+自定义联防击杀奖励规则及假设见 [UNITE-KILL-REWARD.md](../UNITE-KILL-REWARD.md)。

@@ -9,9 +9,9 @@ import { planUnite } from '../../server/match/unite.js';
 import { buildBattleSpec, createBattleFromSpec } from '../../server/sim/spec.js';
 import { startUniteFastJob } from '../../server/match/uniteFastJob.js';
 
-function fixture({ clientCombat = true, helpers = 2, bots = 0, enabled = true, count = 14, limit = 60, armed = false, speed = false } = {}) {
+function fixture({ clientCombat = true, helpers = 2, bots = 0, enabled = true, count = 14, limit = 60, armed = false, speed = false, reward = false } = {}) {
   const h = makeMatch({ humans: 4 - bots, bots, clientCombat, clients: false, instant: false,
-    rules: { ...(enabled ? { uniteFastForward: 'unanimous' } : {}), ...(speed ? { battleSpeedControl: 'unanimous' } : {}) }, seed: 4141 });
+    rules: { ...(enabled ? { uniteFastForward: 'unanimous' } : {}), ...(speed ? { battleSpeedControl: 'unanimous' } : {}), ...(reward ? { uniteKillReward: 'per5' } : {}) }, seed: 4141 });
   h.m.start();
   h.toPrep(1);
   const m = h.m;
@@ -253,5 +253,28 @@ test('speed and Unite fast settlement: real worker cancellation retains speed an
     assert.equal(m.gameSpeed, 8);
     send('p_2', 'propose', 1); send('p_3', 'agree');
     assert.equal(m.gameSpeed, 2);
+  } finally { m.dispose(); }
+});
+
+test('Unite fast settlement with kill rewards pays at most once', async () => {
+  const h = fixture({ clientCombat: false, reward: true, armed: true, count: 25 });
+  const m = h.m;
+  try {
+    const defender = m.unitePlan.helpers[0];
+    const before = defender.pendingFunds;
+    const ownCoins = m.lastResults.get(defender.playerId)?.coins || 0;
+    approve(m);
+    const job = m.uniteFast.job;
+    await job.promise; await nextTurn();
+    h.run(() => m.phase === PHASE.SETTLE);
+    assert.equal(m.phase, PHASE.SETTLE);
+    const result = await job.promise;
+    const credited = result.perPlayer[defender.playerId].creditedKills;
+    assert.ok(credited >= 5, `scenario must include rewarding kills, got ${credited}`);
+    assert.equal(defender.pendingFunds - before, ownCoins + (result.perPlayer[defender.playerId].coins || 0) + Math.floor(credited / 5));
+    const paid = m.order.map(p => p.pendingFunds);
+    m._completeUniteServer(result);
+    assert.deepEqual(m.order.map(p => p.pendingFunds), paid);
+    assert.equal(m.errorCount, 0);
   } finally { m.dispose(); }
 });

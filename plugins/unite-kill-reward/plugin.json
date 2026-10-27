@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schemas/plugin.schema.json",
+  "manifest": 2,
+  "name": {
+    "zh": "联防击杀奖励",
+    "en": "Unite Kill Reward"
+  },
+  "version": "1.0.0",
+  "app": ">=0.3.1 <0.4.0",
+  "api": 2,
+  "class": "content",
+  "scope": [
+    "room"
+  ],
+  "permissions": [],
+  "rules": {
+    "uniteKillReward": "per5"
+  }
+}

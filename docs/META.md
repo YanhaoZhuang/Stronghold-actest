@@ -1079,3 +1079,5 @@ reconnectable, spectator-readable snapshot. Bots resolve immediately. Sources, b
 ## 定制战斗倍速
 
 普通作战与联防允许由声明式规则开启投票调速；服务器统一保持字段时间连续并重排截止和释放计时器，模拟及结算不变。协议和边界见 [战斗倍速](BATTLE-SPEED.md)。
+
+联防击杀奖励的定制规则见 [UNITE-KILL-REWARD.md](UNITE-KILL-REWARD.md)。
